@@ -56,8 +56,8 @@ function Header() {
       ************************************/}
       <div className="nav-header">
         <a className="brand-logo" href="/Home">
-          <img
-            src={isDarkMode ? `images/logo-dark.svg` : 'images/logo-white.svg'}
+           <img
+            src={isDarkMode ? 'images/logo-white.svg' : 'images/logo-dark.svg'}
             style={{ height: '50px' }}
             className=" w-10"
             alt=""
