@@ -74,9 +74,9 @@ function Register() {
       // Handle error (e.g., show error message to the user)
     }
   };
-  // useEffect(() => {
-  //   btnsearch(); // Call on page load
-  // }, []);
+  useEffect(() => {
+    btnsearch(); // Call on page load
+  }, []);
 
   return (
     <div>

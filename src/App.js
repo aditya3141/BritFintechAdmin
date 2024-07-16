@@ -4,7 +4,7 @@ import Home from "./Pages/Home";
 import Sponsor from "./Pages/Sponsor";
 import Register from "./Pages/Register";
 import Contact from "./Pages/Contact";
-import Login from "./Pages/Login";
+import Login from './Pages/Login'
 import ProtectedRoute from "./Components/ProtectedRoute";
 
 function App() {

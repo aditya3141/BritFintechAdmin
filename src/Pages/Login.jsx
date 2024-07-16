@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
@@ -15,21 +16,18 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
-
+    
         try {
-            const response = await fetch('https://www.britfintechawards.com/prod/api/userlogin/checklogin', {
-                method: 'POST',
+            const response = await axios.post('https://www.britfintechawards.com/prod/api/userlogin/checklogin', {
+                userName,
+                password,
+            }, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userName, password }),
             });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const data = await response.json();
+    
+            const data = response.data;
             if (data.response && data.responseCode === "00") {
                 localStorage.setItem('token', data.data.token);  // Store token
                 localStorage.setItem('user', JSON.stringify(data.data));  // Store user information
