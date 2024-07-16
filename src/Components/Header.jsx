@@ -1,130 +1,180 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 
-function Header() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+const Header = () => {
+  const location = useLocation();
+  const { pathname } = location;
+  const splitLocation = pathname.split("/");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showCookiesConsent, setShowCookiesConsent] = useState(true);
+  const [isSticky, setIsSticky] = useState(false);
 
-  const handleThemeToggle = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem('darkMode', JSON.stringify(newMode)); // Store dark mode preference
-    document.body.classList.toggle('dark-mode', newMode); // Apply dark mode class to body
-  };
-
-  // Load dark mode preference from localStorage on component mount
   useEffect(() => {
-    const darkMode = JSON.parse(localStorage.getItem('darkMode'));
-    if (darkMode !== null) {
-      setIsDarkMode(darkMode);
-      document.body.classList.toggle('dark-mode', darkMode); // Apply dark mode class to body
+    const cookiesAccepted = localStorage.getItem("cookiesAccepted");
+    if (cookiesAccepted) {
+      setShowCookiesConsent(false);
     }
+
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  const [userName, setUserName] = useState('');
-  const [loading, setLoading] = useState(true); // State to handle loading
-  const navigate = useNavigate();
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      // Redirect to login if token doesn't exist
-      navigate('/login');
-      return;
+  const handleNavLinkClick = () => {
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
     }
+  };
 
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      setUserName(user.User_Name);
-    }
-
-    // Simulate loading time of 2 seconds
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, [navigate]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/');
+  const acceptCookies = () => {
+    localStorage.setItem("cookiesAccepted", "true");
+    setShowCookiesConsent(false);
   };
 
   return (
     <div>
-      {/***********************************
-      Nav header start
-      ************************************/}
-      <div className="nav-header">
-        <a className="brand-logo" href="/Home">
-          <img
-            src={isDarkMode ? 'images/logo-white.svg' : 'images/logo-dark.svg'}
-            style={{ height: '50px' }}
-            className=" w-10"
-            alt=""
-          />
-        </a>
-        <div className="nav-control">
-          <div className="hamburger">
-            <span className="line" /><span className="line" /><span className="line" />
-          </div>
-        </div>
-      </div>
-      {/***********************************
-      Nav header end
-      ************************************/}
-      {/***********************************
-      Header start
-      ************************************/}
-      <div className="header">
-        <div className="header-content">
-          <nav className="navbar navbar-expand">
-            <div className="collapse navbar-collapse justify-content-between">
-              <div className="header-left">
-                <div className="dashboard_bar">
-                  BFA ADMIN
+      <header className={`cs-site_header cs-style1 cs-sticky-header cs-primary_font ${isSticky ? "sticky" : ""}`}>
+        <div className="cs-main_header">
+          <div className="container">
+            <div className="cs-main_header_in">
+              <div className="cs-main_header_left">
+                <div className={`cs-nav ${isMenuOpen ? "open" : ""}`}>
+                  <ul className={`cs-nav_list`}>
+                    <li id={splitLocation[1] === "about" ? "active" : ""}>
+                      <NavLink
+                        className={`nav-link ${isSticky ? "text-white-navlink" : "text-dark"}`}
+                        to="/about"
+                        onClick={handleNavLinkClick}
+                      >
+                        About BFA 
+                 
+
+                      </NavLink>
+                    </li>
+                    <li id={splitLocation[1] === "sponsors" ? "active" : "text-dark"}>
+                      <NavLink
+                        className={`nav-link ${isSticky ? "text-white-navlink" : "text-dark"}`}
+                        to="/sponsors"
+                        onClick={handleNavLinkClick}
+                      >
+                        Sponsors
+                      </NavLink>
+                    </li>
+                    <li id={splitLocation[1] === "awards" ? "active" : "text-dark"}>
+                      <NavLink
+                        className={`nav-link ${isSticky ? "text-white-navlink" : "text-dark"}`}
+                        to="/awards"
+                        onClick={handleNavLinkClick}
+                      >
+                        Awards
+                      </NavLink>
+                    </li>
+                    <li id={splitLocation[1] === "how-to-enter" ? "active" : "text-dark"}>
+                      <NavLink
+                        className={`nav-link ${isSticky ? "text-white-navlink" : "text-dark"}`}
+                        to="/how-to-enter"
+                        onClick={handleNavLinkClick}
+                      >
+                        How To Enter
+                      </NavLink>
+                    </li>
+                    <li id={splitLocation[1] === "judges" ? "active" : "text-dark"}>
+                      <NavLink
+                        className={`nav-link ${isSticky ? "text-white-navlink" : "text-dark"}`}
+                        to="/judges"
+                        onClick={handleNavLinkClick}
+                      >
+                        Judges
+                      </NavLink>
+                    </li>
+                    <li id={splitLocation[1] === "contact" ? "active" : "text-dark"}>
+                      <NavLink
+                        className={`nav-link ${isSticky ? "text-white-navlink" : "text-dark"}`}
+                        to="/contact"
+                        onClick={handleNavLinkClick}
+                      >
+                        Contact Us
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className={`nav-link d-none-sm ${isSticky ? "text-white-navlink" : ""}`}
+                        to="/register-now"
+                        onClick={handleNavLinkClick}
+                      >
+                        <span className="cs-btn_text d-none-sm cs-btn cs-style6 cs-rounded text-uppercase cs-medium cs-accent_border cs-accent_bg cs-white cs-accent_10_bg_hover cs-accent_40_border_hover cs-accent_color_hover text-center p-2">
+                          Register For Awards
+                        </span>
+                      </NavLink>
+                    </li>
+                    {isMenuOpen && (
+                      <li className="cs-close_icon">
+                        <FontAwesomeIcon icon={faTimes} onClick={toggleMenu} />
+                      </li>
+                    )}
+                  </ul>
                 </div>
               </div>
-              <ul className="navbar-nav header-right">
-                <li className="nav-item dropdown notification_dropdown">
-                  <button
-                    className="nav-link bell dz-theme-mode active"
-                    onClick={handleThemeToggle}
+              <div className="cs-main_header_center">
+                <NavLink className="cs-site_branding" to="/">
+                  <img
+                    src={isSticky ? "../assets/img/logo-white.svg" : "../assets/img/logo.svg"}
+                    width="200px"
+                    alt="Logo"
+                  />
+                </NavLink>
+              </div>
+              <div className="cs-main_header_right">
+                <div className="cs-toolbox">
+                  <NavLink
+                    to="/register-now"
+                    className={`cs-toolbox_btn cs-accent_bg_2 cs-white_hover cs-accent_bg_hover text-white`}
                   >
-                    <i id="icon-light" className="fas fa-sun" />
-                    <i id="icon-dark" className="fas fa-moon" />
-                  </button>
-                </li>
-                <li className="nav-item dropdown header-profile">
-                  <a
-                    className="nav-link"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                  >
-                    <img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt="" />
-                    <div className="header-info ms-3">
-                      <span className="admin-loard">{userName}</span>
-                      <small>Brit Fintech Admin</small>
-                    </div>
-                  </a>
-                  <div className="dropdown-menu dropdown-menu-end">
-                    <NavLink to="/" className="dropdown-item ai-icon" onClick={handleLogout}>
-                      <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" className="text-danger" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                        <polyline points="16 17 21 12 16 7" />
-                        <line x1={21} y1={12} x2={9} y2={12} />
-                      </svg>
-                      <span className="ms-2">Logout </span>
-                    </NavLink>
-                  </div>
-                </li>
-              </ul>
+                    <span style={{ color: "#fff" }}> Register For Awards</span>
+                  </NavLink>
+                </div>
+              </div>
+              <div className="cs-hamburger_menu" onClick={toggleMenu}>
+                <FontAwesomeIcon icon={faBars} />
+              </div>
             </div>
-          </nav>
+          </div>
         </div>
-      </div>
+      </header>
+
+      {showCookiesConsent && (
+        <div className="wrapper">
+          <img src="../assets/img/cookies.png" alt="cookies consent" />
+          <div className="content">
+            <header>Cookies Consent</header>
+            <p>
+              We use cookies to improve your browsing experience and for marketing purposes.
+            </p>
+            <div className="buttons">
+              <button className="item" onClick={acceptCookies}>
+                I understand
+              </button>
+              <NavLink to="/privacy-policy" className="item">
+                Privacy Policy
+              </NavLink>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Header;
