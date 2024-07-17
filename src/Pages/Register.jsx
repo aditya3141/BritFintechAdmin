@@ -174,10 +174,10 @@ function Register() {
                         <th>Full Name</th>
                         <th>Phone</th>
                         <th>Email</th>
-                        <th>TurnoverIn GBP</th>
+                        <th>Turnover In GBP</th>
                         <th>Company Reg No</th>
                         <th>Company Name</th>
-                        <th>Comapny Address</th>
+                        <th>Company Address</th>
                         <th>Award Category</th>
                         <th>Business Corridors</th>
                         <th>Service You Offer</th>
