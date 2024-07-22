@@ -3,6 +3,7 @@ import Header from "../Components/Header";
 import Sidebar from "../Components/Sidebar";
 import Footer from "../Components/Footer";
 import { useNavigate } from "react-router-dom";
+import { Pagination, Table } from "react-bootstrap";
 
 function Sponsor() {
   const [data, setData] = useState([]);
@@ -12,6 +13,21 @@ function Sponsor() {
   const [fromdate, setfromdate] = useState(null);
   const [todate, settodate] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  // Determine the items to be displayed on the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -159,7 +175,7 @@ function Sponsor() {
                   {/* {data.length === 0 ? (
                     <p>No records found</p>
                   ) : ( */}
-                  <table
+                  <Table
                     className="table check-data card-table default-table display mb-4 dataTablesCard table-responsive-xl "
                     id="guestTable-all-2"
                   >
@@ -199,7 +215,18 @@ function Sponsor() {
                         ))
                       )}
                     </tbody>
-                  </table>
+                  </Table>
+                  <Pagination>
+        <Pagination.First onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
+        <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+        {[...Array(totalPages).keys()].map(number => (
+          <Pagination.Item key={number + 1} active={number + 1 === currentPage} onClick={() => handlePageChange(number + 1)}>
+            {number + 1}
+          </Pagination.Item>
+        ))}
+        <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
+        <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
+      </Pagination>
                   {/* )} */}
                 </div>
               </div>

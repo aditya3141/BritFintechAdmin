@@ -4,7 +4,7 @@ import Header from "../Components/Header";
 import Sidebar from "../Components/Sidebar";
 import Footer from "../Components/Footer";
 import Modal from '../Components/Modal';
-import { Button } from 'react-bootstrap';
+import { Button, Pagination, Table } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 
 function Register() {
@@ -15,6 +15,21 @@ function Register() {
   const [phone, setPhone] = useState(null);
   const [fromdate, setfromdate] = useState(null);
   const [todate, settodate] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  // Determine the items to be displayed on the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   const navigate = useNavigate();
   // const [show, setShow] = useState(false);
   // const documentUrl = "https://britfintechawards.com/test/assets/Uploads/BFA20240525023821.pdf"; // Replace with your document URL
@@ -163,10 +178,45 @@ function Register() {
       <Modal show={show} handleClose={handleClose} documentUrl={documentUrl} /> */}
                 </div>
                 <div className="table-responsive">
-                  <table
-                    className="table check-data card-table default-table display mb-4 dataTablesCard table-responsive-xl "
-                    id="guestTable-all-2"
+                <Table className="table check-data card-table default-table display mb-4 dataTablesCard table-responsive-xl" id="guestTable-all-2">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Document</th>
+            <th>Additional Attach</th>
+            <th>Full Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Turnover In GBP</th>
+            <th>Company Reg No</th>
+            <th>How Many Person Join</th>
+            <th>Company Sector</th>
+            <th>Company Name</th>
+            <th>Company Address</th>
+            <th>Award Category</th>
+            <th>Business Corridors</th>
+            <th>Service You Offer</th>
+            <th>Website URL</th>
+            <th>More Details About Yourself</th>
+            <th>Record Insert Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentItems.length === 0 ? (
+            <tr>
+              <td colSpan="16" style={{ textAlign: "center" }}>No records found</td>
+            </tr>
+          ) : (
+            currentItems.map((item, index) => (
+              <tr key={item.id}>
+                <td>{indexOfFirstItem + index + 1}</td>
+                <td>
+                  <button
+                    type="button"
+                    className="btn btn-success light sharp"
+                    onClick={() => handleShow(item.Upload_More_Details)}
                   >
+<<<<<<< Updated upstream
                     <thead>
                       <tr>
                         <th>ID</th>
@@ -206,36 +256,56 @@ function Register() {
                               >Document
                               </button>
                             </div> */}
+=======
+                    Document
+                  </button>
+                </td>
+                <td>
+              {item.AdditionalDoc ? (
+                <button
+                  type="button"
+                  className="btn btn-success light sharp"
+                  onClick={() => handleShow(item.AdditionalDoc_link)}
+                >
+                  Additional doc
+                </button>
+              ) : null}
+            </td>
+>>>>>>> Stashed changes
 
+                <td>{item.FullName}</td>
+                <td>{item.phone}</td>
+                <td>{item.email}</td>
+                <td>{item.Annual_Turnover_In_GBP}</td>
+                <td>{item.Company_Reg_Number}</td>
+                <td>{item.how_many_person_join}</td>
+                <td>{item.Company_Sector}</td>
+                <td>{item.Company_Name}</td>
+                <td>{item.Comapny_Address}</td>
+                <td>{item.Award_Category}</td>
+                <td>{item.Business_Corridors}</td>
+                <td>{item.Service_You_Offer}</td>
+                <td>{item.Website_URL}</td>
+                <td>{item.More_Details_About_Yourself}</td>
+                <td>{item.recordinsertdate}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </Table>
 
-
-
-                              <button
-                                type="button"
-                                className="btn btn-success light sharp"
-                                onClick={() => handleShow(item.Upload_More_Details) }
-			      >
-                                Document
-                              </button>
-                            </td>
-                            <td>{item.FullName}</td>
-                            <td>{item.phone}</td>
-                            <td>{item.email}</td>
-                            <td>{item.Annual_Turnover_In_GBP}</td>
-                            <td>{item.Company_Reg_Number}</td>
-                            <td>{item.Company_Name}</td>
-                            <td>{item.Comapny_Address}</td>
-                            <td>{item.Award_Category}</td>
-                            <td>{item.Business_Corridors}</td>
-                            <td>{item.Service_You_Offer}</td>
-                            <td>{item.Website_URL}</td>
-                            <td>{item.More_Details_About_Yourself}</td>
-                            <td>{item.recordinsertdate}</td>
-                          </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
+      <Pagination>
+        <Pagination.First onClick={() => handlePageChange(1)} disabled={currentPage === 1} />
+        <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} />
+        {[...Array(totalPages).keys()].map(number => (
+          <Pagination.Item key={number + 1} active={number + 1 === currentPage} onClick={() => handlePageChange(number + 1)}>
+            {number + 1}
+          </Pagination.Item>
+        ))}
+        <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} />
+        <Pagination.Last onClick={() => handlePageChange(totalPages)} disabled={currentPage === totalPages} />
+      </Pagination>
+    
 
                   <Modal
                     show={show}

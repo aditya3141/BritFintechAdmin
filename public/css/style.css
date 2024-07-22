@@ -24898,11 +24898,13 @@ code {
     box-shadow: 0 0.625rem 1.25rem 0rem var(--rgba-primary-2); }
     [data-theme-version="dark"] .pagination .page-item.active .page-link {
       color: #fff; }
-  .pagination .page-item .page-link {
-    color: #6e6e6e;
-    -webkit-transition: all 0.5s;
-    -ms-transition: all 0.5s;
-    transition: all 0.5s; }
+      .pagination .page-item .page-link {
+        color: #fff;
+        -webkit-transition: all 0.5s;
+        -ms-transition: all 0.5s;
+        transition: all 0.5s;
+        background: #3f69bb;
+    }
   .pagination .page-item:last-child .page-link {
     margin-right: 0; }
   [direction="rtl"] .pagination .page-item:first-child .page-link {
