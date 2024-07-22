@@ -216,47 +216,6 @@ function Register() {
                     className="btn btn-success light sharp"
                     onClick={() => handleShow(item.Upload_More_Details)}
                   >
-<<<<<<< Updated upstream
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Document</th>
-                        <th>Full Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Turnover In GBP</th>
-                        <th>Company Reg No</th>
-                        <th>Company Name</th>
-                        <th>Company Address</th>
-                        <th>Award Category</th>
-                        <th>Business Corridors</th>
-                        <th>Service You Offer</th>
-                        <th>Website URL</th>
-                        <th>More_Details_About_Yourself</th>
-                        <th>Record Insert Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.length === 0 ? (
-                        <tr>
-                          <td colSpan="9" style={{ textAlign: "center" }}>
-                            No records found
-                          </td>
-                        </tr>
-                      ) : (
-                        data.map((item, index) => (
-                          <tr key={item.id}>
-                            <td>{index + 1}</td>
-                            <td>
-                              {/* <div className="dropdown">
-                              <button
-                                type="button"
-                                className="btn btn-success light sharp"
-                                onClick={handleShow}
-                              >Document
-                              </button>
-                            </div> */}
-=======
                     Document
                   </button>
                 </td>
@@ -271,7 +230,6 @@ function Register() {
                 </button>
               ) : null}
             </td>
->>>>>>> Stashed changes
 
                 <td>{item.FullName}</td>
                 <td>{item.phone}</td>
