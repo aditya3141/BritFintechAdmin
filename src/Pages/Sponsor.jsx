@@ -202,7 +202,7 @@ function Sponsor() {
                       ) : (
                         data.map((item, index) => (
                           <tr key={item.id}>
-                            <td>{index + 1}</td>
+                            <td>{indexOfFirstItem + index + 1}</td>
                             <td>{item.FullName}</td>
                             <td>{item.phone}</td>
                             <td>{item.email}</td>
