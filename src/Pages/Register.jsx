@@ -68,7 +68,7 @@ function Register() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`// Include the token in the Authorization header
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify({ Name, email, phone, fromdate, todate })
         }
@@ -220,6 +220,7 @@ function Register() {
                   </button>
                 </td>
                 <td>
+                 
               {item.AdditionalDoc ? (
                 <button
                   type="button"
@@ -241,10 +242,10 @@ function Register() {
                 <td>{item.Company_Name}</td>
                 <td>{item.Comapny_Address}</td>
                 <td>{item.Award_Category}</td>
-                <td>{item.Business_Corridors}</td>
-                <td>{item.Service_You_Offer}</td>
+                <td style={{overflow: 'scroll'}}>{item.Business_Corridors}</td>
+                <td style={{overflow: 'scroll'}}>{item.Service_You_Offer}</td>
                 <td>{item.Website_URL}</td>
-                <td>{item.More_Details_About_Yourself}</td>
+                <td style={{overflow: 'scroll'}}>{item.More_Details_About_Yourself}</td>
                 <td>{item.recordinsertdate}</td>
               </tr>
             ))

@@ -5,13 +5,12 @@ import Footer from "../Components/Footer";
 import { useNavigate } from "react-router-dom";
 import { Pagination, Table } from "react-bootstrap";
 
-function Contact() {
+function BfaLogs() {
   const [data, setData] = useState([]);
-  const [Name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [flag, setFlag] = useState("1"); // Default to "0" for error logs
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [functionName, setFunctionName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -33,14 +32,19 @@ function Contact() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://www.britfintechawards.com/prod/api/admin/contactlist",
+        "https://www.britfintechawards.com/prod/api/admin/Erroractivitylogs",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ Name, email, phone, fromDate, toDate }),
+          body: JSON.stringify({
+            Function_Name: functionName,
+            flag,
+            fromdate: fromDate,
+            todate: toDate,
+          }),
         }
       );
 
@@ -59,10 +63,7 @@ function Contact() {
       ) {
         setData([]);
       } else {
-        const sortedData = result.data.sort((a, b) =>
-          a.id === 123 ? -1 : b.id === 123 ? 1 : 0
-        );
-        setData(sortedData);
+        setData(result.data);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -94,36 +95,26 @@ function Contact() {
           <div className="container-fluid">
             <div className="row">
               <div className="col-xl-12">
-                <h1>Contact List</h1>
+                <h1>Logs</h1>
                 <div className="row mb-4 align-items-center flex-wrap">
                   <div className="mb-3 col-xl-4 col-lg-4 col-md-4">
-                    <input
-                      type="text"
+                    <select
                       className="form-control"
-                      value={Name}
-                      id="Name"
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Name"
-                    />
-                  </div>
-                  <div className="mb-3 col-xl-4 col-lg-4 col-md-4">
-                    <input
-                      type="email"
-                      className="form-control"
-                      value={email}
-                      id="email"
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Email"
-                    />
+                      value={flag}
+                      onChange={(e) => setFlag(e.target.value)}
+                    >
+                      <option value="1">Activity Log</option>
+                      <option value="0">Error Log</option>
+                    </select>
                   </div>
                   <div className="mb-3 col-xl-4 col-lg-4 col-md-4">
                     <input
                       type="text"
                       className="form-control"
-                      id="phone"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="Phone number"
+                      id="functionName"
+                      value={functionName}
+                      onChange={(e) => setFunctionName(e.target.value)}
+                      placeholder="Function Name"
                     />
                   </div>
                   <div className="mb-3 col-xl-4 col-lg-4 col-md-4">
@@ -162,36 +153,30 @@ function Contact() {
                 <div className="table-responsive">
                   <Table
                     className="table check-data card-table default-table display mb-4 dataTablesCard table-responsive-xl"
-                    id="guestTable-all-2"
+                    id="logTable"
                   >
                     <thead>
                       <tr>
-                        <th>ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Message</th>
-                        <th>Record Insert Date</th>
+                        <th>Sr. No</th>
+                        <th>Function Name</th>
+                        <th>Activity</th>
+                        <th>Record Insert Date Time</th>
                       </tr>
                     </thead>
                     <tbody>
                       {currentItems.length === 0 ? (
                         <tr>
-                          <td colSpan="7" style={{ textAlign: "center" }}>
+                          <td colSpan="4" style={{ textAlign: "center" }}>
                             No records found
                           </td>
                         </tr>
                       ) : (
                         currentItems.map((item, index) => (
-                          <tr key={item.id}>
+                          <tr key={index}>
                             <td>{indexOfFirstItem + index + 1}</td>
-                            <td>{item.firstname}</td>
-                            <td>{item.lastname}</td>
-                            <td>{item.phone}</td>
-                            <td>{item.email}</td>
-                            <td>{item.message}</td>
-                            <td>{item.recordinsertdate}</td>
+                            <td>{item.Function_Name}</td>
+                            <td>{item.Activity}</td>
+                            <td>{item.Record_Insert_Date}</td>
                           </tr>
                         ))
                       )}
@@ -235,4 +220,4 @@ function Contact() {
   );
 }
 
-export default Contact;
+export default BfaLogs;
